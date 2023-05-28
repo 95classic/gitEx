@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.spring.hotel.BoardMapper">
+<!-- namespace : dao 클래스의 sqlSession과 연결하기 위한 키로 사용 -->
+   
+   <!-- 게시글 등록 -->
+   <insert id="insert">
+      INSERT INTO ${board}
+      VALUES (BOARD_SEQ.NEXTVAL, #{memberId}, #{boardTitle}, #{boardContent}, SYSDATE, #{replyCnt})
+   </insert>
+   
+   <!-- 게시글 전체검색(기본/최신순) -->
+   <select id="select_all_default" resultType="BoardVO">
+      SELECT * FROM ${board}
+      ORDER BY ${boardId} DESC
+   </select>
+   
+   <!-- 게시글 전체검색(댓글 많은 순) -->
+   <select id="select_all_reply_cnt" resultType="BoardVO">
+      SELECT * FROM ${board}
+      ORDER BY ${replyCnt} DESC
+   </select>
+   
+   <!-- 게시글 상세검색 -->
+   <select id="select_by_board_id" resultType="BoardVO">
+      SELECT * FROM ${board}
+      WHERE ${boardId} = #{boardId}
+   </select>
+   
+   <!-- 게시글 수정 -->
+   <update id="update">
+      UPDATE ${board} SET
+      ${boardTitle} = #{boardTitle}, ${boardContent} = #{boardContent}, ${boardDateCreated} = SYSDATE
+      WHERE ${boardId} = #{boardId}
+   </update>
+
+   <!-- 게시글 삭제 -->
+   <delete id="delete">
+      DELETE FROM ${board}
+      WHERE ${boardId} = #{boardId}
+   </delete>
+   
+   <!-- 게시글 제목 또는 내용 키워드로 검색 -->
+   <select id="select_by_title_content" resultType="BoardVO">
+      SELECT * FROM ${board}
+      WHERE ${boardTitle} LIKE #{keyword} OR
+         ${boardContent} LIKE #{keyword}
+         ORDER BY ${boardId} DESC
+   </select>
+   
+   <!-- 게시글 작성자 아이디 키워드로 검색 -->
+   <select id="select_by_member_id" resultType="BoardVO">
+      SELECT * FROM ${board}
+      WHERE ${memberId} LIKE #{keyword}
+         ORDER BY ${boardId} DESC
+   </select>
+   
+   <!-- 게시글 페이징 처리를 위한 쿼리 -->
+   <select id="paging" resultType="BoardVO">
+      SELECT B.${boardId}, B.${boardTitle}, B.${boardContent}, B.${memberId}, B.${boardDateCreated}, B.${replyCnt}
+      FROM (
+            SELECT ROWNUM RN, A.* FROM (
+              SELECT * FROM ${board} ORDER BY ${boardId} DESC
+             )A 
+      )B WHERE RN BETWEEN #{start} AND #{end}
+   </select>
+   
+   <!-- 
+   ${start} : criteria.getStart()
+   ${end} : criteria.getEnd()
+    -->
+   
+   <!-- 전체 게시글 수 반환하는 쿼리 -->
+   <select id="total_count" resultType="Integer">
+      SELECT COUNT(*) TOTAL_CNT FROM ${board}
+   </select>
+   
+   <!-- 댓글 등록, 삭제가 일어날 때 댓글 갯수 수정하는 쿼리 -->
+   <update id="update_reply_cnt">
+      UPDATE ${board}
+      SET ${replyCnt} = ${replyCnt} + #{amount}
+      WHERE ${boardId} = #{boardId}
+   </update>
+
+</mapper>

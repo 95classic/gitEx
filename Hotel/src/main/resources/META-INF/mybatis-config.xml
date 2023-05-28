@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- DB 테이블과 컬럼들을 mapper에 매핑하기 위한 변수 선언 -->
+	<properties>
+		<!-- 
+		* property
+		- name : mapper.xml에서 사용될 이름
+		- value : DB 테이블 및 컬럼 이름
+		 -->
+	
+	<!-- MEMBER 테이블 -->
+	<property name="member" value="MEMBER"></property>
+	<property name="memberId" value="MEMBER_ID"/>
+	<property name="memberPw" value="MEMBER_PW"/>
+	<property name="memberName" value="MEMBER_NAME"/>
+	<property name="memberPhone" value="MEMBER_PHONE"/>
+	<property name="memberEmail" value="MEMBER_EMAIL"/>
+	<property name="memberDateCreated" value="MEMBER_DATE_CREATED"/>
+		
+	<!-- HOTEL 테이블 -->
+	<property name="hotel" value="HOTEL"/>
+	<property name="hotelId" value="HOTEL_ID"/>	
+	<property name="hotelName" value="HOTEL_NAME"/>
+	<property name="hotelContent" value="HOTEL_CONTENT"/>
+	<property name="hotelPrice" value="HOTEL_PRICE"/>
+	<property name="reviewCnt" value="REVIEW_CNT"/>
+				
+	<!-- REVIEW 테이블 -->
+	<property name="review" value="REVIEW"/>
+	<property name="reviewId" value="REVIEW_ID"/>
+	<property name="memberId" value="MEMBER_ID"/>
+	<property name="hotelId" value="HOTEL_ID"/>
+	<property name="reviewContent" value="REVIEW_CONTENT"/>
+	<property name="reviewDateCreated" value="REVIEW_DATE_CREATED"/>
+	
+	<!-- BOARD 테이블 -->				
+	<property name="board" value="BOARD"/>
+	<property name="boardId" value="BOARD_ID"/>
+	<property name="memberId" value="MEMBER_ID"/>
+	<property name="boardTitle" value="BOARD_TITLE"/>
+	<property name="boardContent" value="BOARD_CONTENT"/>
+	<property name="boardDateCreated" value="BOARD_DATE_CREATED"/>
+	<property name="replyCnt" value="REPLY_CNT"/>
+	
+	<!-- REPLY 테이블 -->
+	<property name="reply" value="REPLY"/>
+	<property name="replyId" value="REPLY_ID"/>
+	<property name="memberId" value="MEMBER_ID"/>
+	<property name="boardId" value="BOARD_ID"/>
+	<property name="replyContent" value="REPLY_CONTENT"/>
+	<property name="replyDateCreated" value="REPLY_DATE_CREATED"/>
+		
+	</properties>
+	
+	<!-- underscore 명명법을 camel 명명법으로 변환 가능하도록 세팅 -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
+	</settings>
+	
+	<!-- typeAliases : mapper.xml의 select 리턴 타입에 들어갈 클래스 경로를 설정 -->
+	<typeAliases>
+		<package name="edu.spring.hotel.domain"></package>
+	</typeAliases>
+	
+</configuration>
